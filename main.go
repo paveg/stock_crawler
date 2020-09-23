@@ -1,9 +1,16 @@
 package main
 
 import (
+	"github.com/gocolly/colly"
 	log "github.com/sirupsen/logrus"
 	"os"
+	"strings"
 )
+
+const URL = "https://www.amazon.co.jp/dp/B08GGGBKRQ"
+const WithEcoBagURL = "https://www.amazon.co.jp/dp/B08GGGCH3Y"
+
+const OutOfStackMessage = "現在在庫切れです。"
 
 func init() {
 	log.SetFormatter(&log.JSONFormatter{})
@@ -20,4 +27,31 @@ func init() {
 
 func main() {
 	log.Infoln("execute main.")
+
+	c := colly.NewCollector()
+
+	spanSelector := "#availability > span:first-child"
+	c.OnHTML(spanSelector, func(e *colly.HTMLElement) {
+		text := e.DOM.Text()
+		result := cleanText(text)
+
+		if result != OutOfStackMessage {
+			// TODO: implements notification
+			log.Infoln("ok")
+		}
+	})
+
+	err := c.Visit(URL)
+	if err != nil {
+		log.Warnln(err)
+	}
+	err = c.Visit(WithEcoBagURL)
+	if err != nil {
+		log.Warnln(err)
+	}
+}
+
+func cleanText(text string) string {
+	result := strings.Replace(text, "\n", "", -1)
+	return strings.TrimSpace(result)
 }
