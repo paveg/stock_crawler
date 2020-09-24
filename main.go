@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gocolly/colly"
+	"github.com/paveg/ps5_crawler/api"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"strings"
@@ -29,7 +30,9 @@ func main() {
 	log.Infoln("execute main.")
 	result := crawl()
 	if result {
-		// TODO: implements notification
+		err := api.Notify("[test]In stock"); if err != nil {
+			log.Errorln(err)
+		}
 	}
 }
 
