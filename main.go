@@ -27,7 +27,20 @@ func init() {
 
 func main() {
 	log.Infoln("execute main.")
+	result := crawl()
+	if result {
+		// TODO: implements notification
+	}
+}
 
+func cleanText(text string) string {
+	result := strings.Replace(text, "\n", "", -1)
+	return strings.TrimSpace(result)
+}
+
+// FIXME: I'd like to return any URLs I have in stock.
+func crawl() bool {
+	v := false
 	c := colly.NewCollector()
 
 	spanSelector := "#availability > span:first-child"
@@ -36,8 +49,8 @@ func main() {
 		result := cleanText(text)
 
 		if result != OutOfStackMessage {
-			// TODO: implements notification
 			log.Infoln("ok")
+			v = true
 		}
 	})
 
@@ -49,9 +62,6 @@ func main() {
 	if err != nil {
 		log.Warnln(err)
 	}
-}
 
-func cleanText(text string) string {
-	result := strings.Replace(text, "\n", "", -1)
-	return strings.TrimSpace(result)
+	return v
 }
