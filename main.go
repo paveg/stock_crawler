@@ -29,13 +29,19 @@ func init() {
 
 func main() {
 	log.Infoln("executing...")
-	result, url := crawl()
-	if result {
-		err := api.Notify(fmt.Sprintf("In stock\n%s", url))
-		if err != nil {
-			log.Errorln(err)
+	result := false
+	urls := []string{URL, WithEcoBagURL}
+
+	for _, url := range urls {
+		result = crawl(url)
+		if result {
+			err := api.Notify(fmt.Sprintf("In stock\n%s", url))
+			if err != nil {
+				log.Errorln(err)
+			}
 		}
 	}
+
 	log.Infoln("PS5 crawler has finished")
 }
 
@@ -44,9 +50,8 @@ func cleanText(text string) string {
 	return strings.TrimSpace(result)
 }
 
-func crawl() (bool, string) {
-	v := false
-	url := ""
+func crawl(url string) bool {
+	stockResult := false
 	c := colly.NewCollector()
 
 	spanSelector := "#availability > span:first-child"
@@ -56,25 +61,14 @@ func crawl() (bool, string) {
 
 		if result != OutOfStackMessage {
 			log.Infoln("ok")
-			v = true
+			stockResult = true
 		}
 	})
 
-	err := c.Visit(URL)
+	err := c.Visit(url)
 	if err != nil {
 		log.Errorln(err)
 	}
-	if v {
-		url = URL
-	}
 
-	err = c.Visit(WithEcoBagURL)
-	if err != nil {
-		log.Errorln(err)
-	}
-	if v {
-		url = WithEcoBagURL
-	}
-
-	return v, url
+	return stockResult
 }
