@@ -31,7 +31,7 @@ func main() {
 	log.Infoln("executing...")
 	result, url := crawl()
 	if result {
-		err := api.Notify(fmt.Sprintf("In stock: %s\n", url))
+		err := api.Notify(fmt.Sprintf("In stock\n%s", url))
 		if err != nil {
 			log.Errorln(err)
 		}
