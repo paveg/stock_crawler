@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gocolly/colly"
 	"github.com/paveg/ps5_crawler/api"
 	log "github.com/sirupsen/logrus"
@@ -27,13 +28,15 @@ func init() {
 }
 
 func main() {
-	log.Infoln("execute main.")
-	result := crawl()
+	log.Infoln("executing...")
+	result, url := crawl()
 	if result {
-		err := api.Notify("[test]In stock"); if err != nil {
+		err := api.Notify(fmt.Sprintf("In stock: %s\n", url))
+		if err != nil {
 			log.Errorln(err)
 		}
 	}
+	log.Infoln("PS5 crawler has finished")
 }
 
 func cleanText(text string) string {
@@ -41,9 +44,9 @@ func cleanText(text string) string {
 	return strings.TrimSpace(result)
 }
 
-// FIXME: I'd like to return any URLs I have in stock.
-func crawl() bool {
+func crawl() (bool, string) {
 	v := false
+	url := ""
 	c := colly.NewCollector()
 
 	spanSelector := "#availability > span:first-child"
@@ -59,12 +62,19 @@ func crawl() bool {
 
 	err := c.Visit(URL)
 	if err != nil {
-		log.Warnln(err)
+		log.Errorln(err)
 	}
-	err = c.Visit(WithEcoBagURL)
-	if err != nil {
-		log.Warnln(err)
+	if v {
+		url = URL
 	}
 
-	return v
+	err = c.Visit(WithEcoBagURL)
+	if err != nil {
+		log.Errorln(err)
+	}
+	if v {
+		return v, WithEcoBagURL
+	}
+
+	return v, url
 }
