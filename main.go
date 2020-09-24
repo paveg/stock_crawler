@@ -73,7 +73,7 @@ func crawl() (bool, string) {
 		log.Errorln(err)
 	}
 	if v {
-		return v, WithEcoBagURL
+		url = WithEcoBagURL
 	}
 
 	return v, url
