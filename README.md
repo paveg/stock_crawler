@@ -9,6 +9,16 @@ this script checks the PlayStation 5 inventory and notifies you.
 
 Clone this repository before you use it.
 
+access to `LINE Notify` page and registration service.
+
+https://notify-bot.line.me/ja/
+
+set your `LINE_NOTIFY_TOKEN` .
+
+```bash
+export LINE_NOTIFY_TOKEN=xxx
+```
+
 ```bash
 $ go run main.go
 ```
