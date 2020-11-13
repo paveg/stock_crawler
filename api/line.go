@@ -11,7 +11,8 @@ import (
 const URL = "https://notify-api.line.me/api/notify"
 
 func Notify(msg string) error {
-	accessToken := os.Getenv("LINE_NOTIFY_TOKEN"); if accessToken == "" {
+	accessToken := os.Getenv("LINE_NOTIFY_TOKEN")
+	if accessToken == "" {
 		return errors.New("not found LINE_NOTIFY_TOKEN")
 	}
 
@@ -32,9 +33,10 @@ func Notify(msg string) error {
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("Authorization", "Bearer " + accessToken)
+	req.Header.Set("Authorization", "Bearer "+accessToken)
 
-	_, err = c.Do(req); if err != nil {
+	_, err = c.Do(req)
+	if err != nil {
 		return err
 	}
 

@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strings"
 	"github.com/gocolly/colly"
 	"github.com/paveg/ps5_crawler/api"
 	log "github.com/sirupsen/logrus"
-	"os"
-	"strings"
 )
 
 const URL = "https://www.amazon.co.jp/dp/B08GGGBKRQ"
@@ -60,7 +60,7 @@ func crawl(url string) bool {
 		text := e.DOM.Text()
 		result := cleanText(text)
 
-		if (result != OutOfStackMessage && result != ExhibitionSellersMessage) {
+		if result != OutOfStackMessage && result != ExhibitionSellersMessage {
 			log.Infoln("ok")
 			stockResult = true
 		}
