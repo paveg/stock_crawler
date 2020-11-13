@@ -23,4 +23,4 @@ export LINE_NOTIFY_TOKEN=xxx
 $ go run main.go
 ```
 
-[license]: https://github.com/paveg/ps5_crawler/blob/master/LICENSE
+[license]: https://github.com/paveg/stock_crawler/blob/master/LICENSE

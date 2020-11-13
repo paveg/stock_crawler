@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
 	"github.com/gocolly/colly"
-	"github.com/paveg/ps5_crawler/api"
+	"github.com/paveg/stock_crawler/api"
 	log "github.com/sirupsen/logrus"
 )
 

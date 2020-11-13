@@ -1,4 +1,4 @@
-module github.com/paveg/ps5_crawler
+module github.com/paveg/stock_crawler
 
 go 1.15
 
