@@ -13,6 +13,7 @@ const URL = "https://www.amazon.co.jp/dp/B08GGGBKRQ"
 const WithEcoBagURL = "https://www.amazon.co.jp/dp/B08GGGCH3Y"
 
 const OutOfStackMessage = "現在在庫切れです。"
+const ExhibitionSellersMessage = "出品者からお求めいただけます。"
 
 func init() {
 	log.SetFormatter(&log.JSONFormatter{})
@@ -59,7 +60,7 @@ func crawl(url string) bool {
 		text := e.DOM.Text()
 		result := cleanText(text)
 
-		if result != OutOfStackMessage {
+		if (result != OutOfStackMessage && result != ExhibitionSellersMessage) {
 			log.Infoln("ok")
 			stockResult = true
 		}
